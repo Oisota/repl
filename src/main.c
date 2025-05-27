@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define BUF_SIZE 256
+#define BUF_SIZE 512
 
 int
 main(int argc, char **argv) {
@@ -46,11 +46,12 @@ main(int argc, char **argv) {
 		prompt_given = true;
 	}
 
-	strcat(prompt, command); // segfault here
+	strcat(prompt, command);
 
 	while (true) {
 		// calculate prompt
 		if (prompt_given) {
+			// TODO run prompt command in subshell and capture output
 		}
 
 		// display prompt
