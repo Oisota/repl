@@ -12,7 +12,23 @@
 
 int
 main(int argc, char **argv) {
+
+	void capture_command_output(char*, char*);
+
+	char *base_command = argv[1];
+	char *default_command;
+	char *prompt_command;
+
+	bool prompt_given = false;
+	bool default_given = false;
+	bool sub_command_given = false;
+
+	char sub_command[BUF_SIZE] = "";
+	char prompt[BUF_SIZE] = "";
+	char full_command[BUF_SIZE] = "";
 	
+	char *user_input;
+
 	if (argc < 2) {
 		printf("Error: no command given\n");
 		printf("Usage: %s <command> [<default> <prompt>]\n", argv[0]);
@@ -25,40 +41,36 @@ main(int argc, char **argv) {
 		return 1;
 	}
 
-	char *command = argv[1];
-	char *default_command;
-	char *prompt_command;
-
-	bool prompt_given = false;
-	bool default_given = false;
-	bool sub_command_given = false;
-
-	char sub_command[BUF_SIZE];
-	char prompt[BUF_SIZE] = "";
-	char full_command[BUF_SIZE];
-
 	if (argc >= 3) {
 		default_command = argv[2];
 		default_given = true;
 	}
+
 	if (argc == 4) {
 		prompt_command = argv[3];
 		prompt_given = true;
 	}
 
-	strcat(prompt, command);
 
 	while (true) {
 		// calculate prompt
 		if (prompt_given) {
-			// TODO run prompt command in subshell and capture output
+			capture_command_output(prompt_command, prompt);
+			strcat(prompt, " ");
 		}
 
 		// display prompt
+		strcat(prompt, base_command);
 		printf("%s> ", prompt);
+		memset(prompt, 0, BUF_SIZE); // reset prompt buffer
 
 		// read user input
-		fgets(sub_command, BUF_SIZE, stdin);
+		user_input = fgets(sub_command, BUF_SIZE, stdin);
+		if (user_input == NULL) { // exit if we hit EOF (ctrl-d)
+			printf("\n");
+			break;
+		}
+
 		sub_command[strcspn(sub_command, "\n")] = 0; // remove new line
 		sub_command_given = strlen(sub_command) > 1;
 
@@ -68,7 +80,7 @@ main(int argc, char **argv) {
 		}
 
 		// build full command
-		strcpy(full_command, command);
+		strcpy(full_command, base_command);
 		strcat(full_command, " ");
 
 		if (sub_command_given) {
@@ -82,4 +94,28 @@ main(int argc, char **argv) {
 	}
 
 	return 0;
+}
+
+/*
+ * Capture the output of the shell command (cmd) and write it to dst
+ */
+void
+capture_command_output(char* cmd, char* dst) {
+	FILE *fp;
+	char tmp[BUF_SIZE];
+
+	fp = popen(cmd, "r");
+	if (NULL == fp) {
+		printf("Failed to run command: %s\n", cmd);
+	}
+
+	while(fgets(tmp, BUF_SIZE, fp) != NULL) {
+		tmp[strcspn(tmp, "\n")] = 0; // remove new line
+		strcat(dst, tmp);
+	}
+
+	int status = pclose(fp);
+	if (status == -1) {
+		printf("Error closing pipe\n");
+	}
 }

@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -MMD -Wall -Wextra -pedantic -std=c11
+CFLAGS := -MMD -Wall -Wextra -pedantic -std=gnu17
 DEBUG_FLAGS := -ggdb
 
 SRC := $(wildcard src/*.c)
