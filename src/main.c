@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #define BUF_SIZE 512
 
@@ -18,17 +20,17 @@ main(int argc, char **argv) {
 	char *base_command = argv[1];
 	char *default_command;
 	char *prompt_command;
+	char *sub_command;
 
-	bool prompt_given = false;
 	bool default_given = false;
+	bool prompt_given = false;
 	bool sub_command_given = false;
 
-	char sub_command[BUF_SIZE] = "";
 	char prompt[BUF_SIZE] = "";
 	char full_command[BUF_SIZE] = "";
 	
-	char *user_input;
 
+	// parse and validate cli args
 	if (argc < 2) {
 		printf("Error: no command given\n");
 		printf("Usage: %s <command> [<default> <prompt>]\n", argv[0]);
@@ -51,28 +53,28 @@ main(int argc, char **argv) {
 		prompt_given = true;
 	}
 
-
 	while (true) {
 		// calculate prompt
 		if (prompt_given) {
 			capture_command_output(prompt_command, prompt);
 			strcat(prompt, " ");
 		}
-
-		// display prompt
 		strcat(prompt, base_command);
-		printf("%s> ", prompt);
+		strcat(prompt, "> ");
+
+		// display prompt, read user input
+		sub_command = readline(prompt);
 		memset(prompt, 0, BUF_SIZE); // reset prompt buffer
 
-		// read user input
-		user_input = fgets(sub_command, BUF_SIZE, stdin);
-		if (user_input == NULL) { // exit if we hit EOF (ctrl-d)
-			printf("\n");
+		if (sub_command == NULL) { // exit if we hit EOF (ctrl-d)
 			break;
 		}
 
-		sub_command[strcspn(sub_command, "\n")] = 0; // remove new line
 		sub_command_given = strlen(sub_command) > 1;
+
+		if (sub_command_given) {
+			add_history(sub_command);
+		}
 
 		// noop if no command and no default provided
 		if (!default_given && !sub_command_given) {
@@ -91,6 +93,7 @@ main(int argc, char **argv) {
 
 		// execute sub command, using default if no cmd provided
 		system(full_command);
+		free(sub_command);
 	}
 
 	return 0;

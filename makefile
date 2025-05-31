@@ -15,7 +15,7 @@ debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(EXE)
 
 $(EXE): $(OBJ)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ -lreadline
 
 .PHONY: clean
 clean:
