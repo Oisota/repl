@@ -15,6 +15,7 @@ debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(EXE)
 
 $(EXE): $(OBJ)
+	mkdir -p $(@D)
 	$(CC) -o $@ $^ -lreadline
 
 .PHONY: clean
