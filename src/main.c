@@ -1,6 +1,5 @@
 /*
- * Wrap a command in an interactive shell
- * Receommend wrapping this program with rlwrap for command history other nice things
+ * Wrap a program that uses subcommands in an interactive shell
  */
 
 #include <stdio.h>
@@ -32,14 +31,14 @@ main(int argc, char **argv) {
 
 	// parse and validate cli args
 	if (argc < 2) {
-		printf("Error: no command given\n");
-		printf("Usage: %s <command> [<default> <prompt>]\n", argv[0]);
+		fprintf(stderr, "Error: no command given\n");
+		fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
 		return 1;
 	}
 
 	if (argc > 5) {
-		printf("Error: too many commands given\n");
-		printf("Usage: %s <command> [<default> <prompt>]\n", argv[0]);
+		fprintf(stderr, "Error: too many commands given\n");
+		fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
 		return 1;
 	}
 
