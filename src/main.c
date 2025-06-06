@@ -8,8 +8,11 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <getopt.h>
+#include "util.h"
 
-#define BUF_SIZE 512
+#define NAME "REPL"
+#define VERSION "0.1.0"
 
 int
 main(int argc, char **argv) {
@@ -96,28 +99,4 @@ main(int argc, char **argv) {
 	}
 
 	return 0;
-}
-
-/*
- * Capture the output of the shell command (cmd) and write it to dst
- */
-void
-capture_command_output(char* cmd, char* dst) {
-	FILE *fp;
-	char tmp[BUF_SIZE];
-
-	fp = popen(cmd, "r");
-	if (NULL == fp) {
-		printf("Failed to run command: %s\n", cmd);
-	}
-
-	while(fgets(tmp, BUF_SIZE, fp) != NULL) {
-		tmp[strcspn(tmp, "\n")] = 0; // remove new line
-		strcat(dst, tmp);
-	}
-
-	int status = pclose(fp);
-	if (status == -1) {
-		printf("Error closing pipe\n");
-	}
 }

@@ -1,15 +1,19 @@
+SRC := src
+BIN := bin
+INC := include
+BUILD := build
+
 CC := gcc
-CFLAGS := -MMD -Wall -Wextra -pedantic -std=gnu17
+CFLAGS := -MMD -Wall -Wextra -pedantic -std=gnu17 -I$(INC)
 DEBUG_FLAGS := -ggdb
 RELEASE_FLAGS := -O3 -DNDEBUG
 
-SRC := $(wildcard src/*.c)
-OBJ := $(SRC:%.c=%.o)
-DEP := $(OBJ:%.o=%.d)
-BUILD := build
+SOURCES := $(wildcard $(SRC)/*.c)
+OBJ := $(patsubst $(SRC)/%.c, $(BUILD)/%.o, $(SOURCES))
+DEP := $(patsubst %.o, %.d, $(OBJ))
 PREFIX := ~/.local/bin
 
-EXE := $(BUILD)/repl
+EXE := $(BIN)/repl
 
 all: debug
 
