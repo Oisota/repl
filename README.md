@@ -1,22 +1,17 @@
 # REPL
 Create a REPL for a given command line program that takes sub arguments.
+This program uses [GNU Readline](https://tiswww.case.edu/php/chet/readline/rltop.html) to provide file completion and command history.
 
 For Example:
 
 Create a git shell where the default command `git status` runs if the user presses enter with no sub command given.
 ```sh
-$ repl git status
+$ repl -d status git
 git>
 ```
 
 Create a docker shell that runs `docker ps` if no sub command is given.
 ```sh
-$ repl docker ps
+$ repl -d ps docker
 docker>
-```
-
-It is recommended to wrap this program with `rlwrap` to get command history and other nice things:
-```sh
-$ rlwrap -c repl git status
-git>
 ```
