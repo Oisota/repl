@@ -30,6 +30,55 @@ main(int argc, char **argv) {
 
 	char prompt[BUF_SIZE] = "";
 	char full_command[BUF_SIZE] = "";
+
+	int c;
+	int digit_optind = 0;
+
+	static struct option long_options[] = {
+		{"help", no_argument, 0, 'h'},
+		{"version", no_argument, 0, 'v'},
+		{"default", required_argument, 0, 'd'},
+		{"prompt", required_argument, 0, 'p'},
+		{0, 0, 0, 0}
+	};
+	int option_index = 0;
+	while ((c = getopt_long(argc, argv, "h::v::d::p::", long_options, &option_index)) != -1) {
+		
+		switch (c) {
+			case 'h':
+				exit(0);
+
+			case 'v':
+				printf("%s %s\n", NAME, VERSION);
+				exit(0);
+
+			case 'd':
+				printf("option d with value '%s'\n", optarg);
+				default_given = true;
+				break;
+
+			case 'p':
+				printf("option p with value '%s'\n", optarg);
+				prompt_given = true;
+				break;
+
+			case '?':
+				fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
+				exit(1);
+
+			default:
+				fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
+				exit(1);
+		}
+	}
+
+	if (optind < argc) {
+		printf("non-option ARGV-elements: ");
+		while (optind < argc)
+			printf("%s ", argv[optind++]);
+		printf("\n");
+	}
+
 	
 
 	// parse and validate cli args
