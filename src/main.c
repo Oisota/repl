@@ -46,6 +46,15 @@ main(int argc, char **argv) {
 		
 		switch (c) {
 			case 'h':
+				printf("Usage: %s [options] <command>\n", argv[0]);
+				printf("Wrap a command that takes sub-commands in an interactive repl shell\n");
+				printf("Example: repl --default status git\n\n");
+				printf("Options:\n");
+				printf("  -h, --help              Display this information\n");
+				printf("  -v, --version           Display program version information\n");
+				printf("  -d, --default <command> Set the default command\n");
+				printf("  -p, --prompt <command>  Set the command to run in order to calculate the repl prompt\n\n");
+				printf("<command> The final non option argument is the command to wrap in the repl\n");
 				exit(0);
 
 			case 'v':
@@ -54,11 +63,13 @@ main(int argc, char **argv) {
 
 			case 'd':
 				printf("option d with value '%s'\n", optarg);
+				default_command = optarg;
 				default_given = true;
 				break;
 
 			case 'p':
 				printf("option p with value '%s'\n", optarg);
+				prompt_command = optarg;
 				prompt_given = true;
 				break;
 
