@@ -14,12 +14,14 @@
 #define NAME "REPL"
 #define VERSION "0.1.0"
 
+extern int opterr;
+
 int
 main(int argc, char **argv) {
 
 	void capture_command_output(char*, char*);
 
-	char *base_command = argv[1];
+	char *base_command;
 	char *default_command;
 	char *prompt_command;
 	char *sub_command;
@@ -40,8 +42,10 @@ main(int argc, char **argv) {
 		{"prompt", required_argument, NULL, 'p'},
 		{NULL, 0, NULL, 0}
 	};
+	const char *short_opts = "hvd:p:";
 	int option_index = 0;
-	while ((c = getopt_long(argc, argv, "h::v::d::p::", long_options, &option_index)) != -1) {
+	opterr = 0;
+	while ((c = getopt_long(argc, argv, short_opts, long_options, &option_index)) != -1) {
 		
 		switch (c) {
 			case 'h':
@@ -61,29 +65,29 @@ main(int argc, char **argv) {
 				exit(0);
 
 			case 'd':
-				printf("option d with value '%s'\n", optarg);
 				default_command = optarg;
 				default_given = true;
 				break;
 
 			case 'p':
-				printf("option p with value '%s'\n", optarg);
 				prompt_command = optarg;
 				prompt_given = true;
 				break;
 
 			case '?':
-				fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
+				fprintf(stderr, "Usage: %s [options] <command>\n", argv[0]);
 				exit(1);
 
 			default:
-				fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
+				fprintf(stderr, "Usage: %s [options] <command>\n", argv[0]);
 				exit(1);
 		}
 	}
 
 	if (optind < argc) {
-		printf("non-option ARGV-elements: ");
+
+		base_command = argv[optind++];
+
 		while (optind < argc)
 			printf("%s ", argv[optind++]);
 		printf("\n");
