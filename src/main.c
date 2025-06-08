@@ -35,11 +35,11 @@ main(int argc, char **argv) {
 	int digit_optind = 0;
 
 	static struct option long_options[] = {
-		{"help", no_argument, 0, 'h'},
-		{"version", no_argument, 0, 'v'},
-		{"default", required_argument, 0, 'd'},
-		{"prompt", required_argument, 0, 'p'},
-		{0, 0, 0, 0}
+		{"help", no_argument, NULL, 'h'},
+		{"version", no_argument, NULL, 'v'},
+		{"default", required_argument, NULL, 'd'},
+		{"prompt", required_argument, NULL, 'p'},
+		{NULL, 0, NULL, 0}
 	};
 	int option_index = 0;
 	while ((c = getopt_long(argc, argv, "h::v::d::p::", long_options, &option_index)) != -1) {
@@ -79,30 +79,6 @@ main(int argc, char **argv) {
 		printf("\n");
 	}
 
-	
-
-	// parse and validate cli args
-	if (argc < 2) {
-		fprintf(stderr, "Error: no command given\n");
-		fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
-		return 1;
-	}
-
-	if (argc > 5) {
-		fprintf(stderr, "Error: too many commands given\n");
-		fprintf(stderr, "Usage: %s <command> [<default> <prompt>]\n", argv[0]);
-		return 1;
-	}
-
-	if (argc >= 3) {
-		default_command = argv[2];
-		default_given = true;
-	}
-
-	if (argc == 4) {
-		prompt_command = argv[3];
-		prompt_given = true;
-	}
 
 	while (true) {
 		// calculate prompt

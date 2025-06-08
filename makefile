@@ -15,6 +15,9 @@ PREFIX := ~/.local/bin
 
 EXE := $(BIN)/repl
 
+$(BUILD)/%.o: $(SRC)/%.c
+	$(CC) $(CFLAGS) -c $^ -o $@
+
 all: debug
 
 debug: CFLAGS += $(DEBUG_FLAGS)
