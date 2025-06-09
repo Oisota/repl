@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: install dependencies
-      run: sudo apt install -y libreadline8 libreadline-dev
+      run: sudo apt install -y build-essential libreadline8 libreadline-dev
     - name: make
       run: make
