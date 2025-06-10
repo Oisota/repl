@@ -18,7 +18,7 @@ EXE := $(BIN)/repl
 $(BUILD)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-all: debug
+all: build_dirs debug
 
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(EXE)
@@ -32,6 +32,10 @@ release: $(EXE)
 
 install: release
 	install $(EXE) $(PREFIX)
+
+.PHONY: build_dirs
+build_dirs:
+	mkdir bin build
 
 .PHONY: clean
 clean:

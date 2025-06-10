@@ -17,7 +17,5 @@ jobs:
       run: sudo apt install -y build-essential libreadline8 libreadline-dev
     - name: clean
       run: make clean
-    - name: debug build files
-      run: ls build
     - name: make
       run: make
