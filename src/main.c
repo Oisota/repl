@@ -85,12 +85,7 @@ main(int argc, char **argv) {
 	}
 
 	if (optind < argc) {
-
 		base_command = argv[optind++];
-
-		while (optind < argc)
-			printf("%s ", argv[optind++]);
-		printf("\n");
 	}
 
 
