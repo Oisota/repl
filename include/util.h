@@ -6,7 +6,7 @@
 #define BUF_SIZE 512
 
 struct CommandOption {
-	char *command;
+	char *text;
 	bool present;
 };
 
