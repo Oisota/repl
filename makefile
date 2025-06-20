@@ -11,7 +11,7 @@ RELEASE_FLAGS := -O3 -DNDEBUG
 SOURCES := $(wildcard $(SRC)/*.c)
 OBJ := $(patsubst $(SRC)/%.c, $(BUILD)/%.o, $(SOURCES))
 DEP := $(patsubst %.o, %.d, $(OBJ))
-PREFIX := ~/.local/bin
+PREFIX := $(HOME)/.local/bin
 
 EXE := $(BIN)/repl
 
@@ -31,7 +31,11 @@ release: CFLAGS += $(RELEASE_FLAGS)
 release: build_dirs $(EXE)
 
 install: release
-	install $(EXE) $(PREFIX)
+	install -v -D $(EXE) $(PREFIX)
+
+.PHONY: uninstall
+uninstall:
+	$(RM) $(PREFIX)/$(EXE)
 
 .PHONY: build_dirs
 build_dirs:
