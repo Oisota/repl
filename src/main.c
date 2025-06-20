@@ -13,8 +13,6 @@
 int
 main(int argc, char **argv) {
 
-	void capture_command_output(char*, char*);
-
 	char prompt[BUF_SIZE] = "";
 	char full_command[BUF_SIZE] = "";
 	struct CommandOption sub_command;
