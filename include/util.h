@@ -5,7 +5,7 @@
 
 #define BUF_SIZE 512
 #define NAME "REPL"
-#define VERSION "0.1.0"
+#define VERSION "0.1.3"
 
 struct CommandOption {
 	char *text;
