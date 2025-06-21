@@ -9,6 +9,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "util.h"
+#include "opts.h"
 
 int
 main(int argc, char **argv) {
