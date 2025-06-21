@@ -9,6 +9,7 @@
  */
 struct ParsedOptions*
 parse_cli_args(int argc, char **argv) {
+	void print_usage(const char*);
 	struct ParsedOptions *opts = malloc(sizeof(struct ParsedOptions));
 	struct CommandOption *base_command = malloc(sizeof(struct CommandOption));
 	struct CommandOption *default_command = malloc(sizeof(struct CommandOption));
@@ -28,6 +29,10 @@ parse_cli_args(int argc, char **argv) {
 	int c;
 	int option_index = 0;
 	opterr = 0;
+
+	if (argc == 1) {
+		print_usage(argv[0]);
+	}
 
 	while ((c = getopt_long(argc, argv, short_opts, long_options, &option_index)) != -1) {
 		switch (c) {
@@ -62,12 +67,11 @@ parse_cli_args(int argc, char **argv) {
 				break;
 
 			case '?':
-				fprintf(stderr, "Usage: %s [options] <command>\n", argv[0]);
-				exit(1);
+				print_usage(argv[0]);
+				break;
 
 			default:
-				fprintf(stderr, "Usage: %s [options] <command>\n", argv[0]);
-				exit(1);
+				print_usage(argv[0]);
 		}
 	}
 
@@ -77,6 +81,13 @@ parse_cli_args(int argc, char **argv) {
 
 	return opts;
 
+}
+
+void
+print_usage(const char* prog) {
+	fprintf(stderr, "Usage: %s [options] <command>\n", prog);
+	fprintf(stderr, "Run %s --help for more info.\n", prog);
+	exit(1);
 }
 
 /*
